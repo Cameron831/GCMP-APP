@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
   }, [selectedDate]);
 
   const generateTeetimesForDay = (date) => {
-    const startHour = 8; //start time
+    const startHour = 7; //start time
     const endHour = 17; //end time
     const newTeetimes = [];
   
@@ -47,7 +47,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerContainer: {
-    margin: 20,
+    //margin: 20,
+    width: '100%',
+    borderBottomWidth: 1,
+    alignItems: 'center',
   },
   teetimeContainer: {
     width: '100%',

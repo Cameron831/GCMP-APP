@@ -21,7 +21,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderBottomWidth: 1,
+        //borderWidth: 1,
+        //marginVertical: 5
     },
     timeContainer: {
         alignItems: 'center',

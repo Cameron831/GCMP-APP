@@ -1,25 +1,29 @@
 import React from 'react';
 import {Text, StyleSheet, View, Touchable} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Player = ({navigation}) => {
+const Player = () => {
     return (
-       <View style={styles.button}>
-            <TouchableOpacity>
-                <Text>Cameron Harris</Text>
-            </TouchableOpacity>
-       </View>
+        <TouchableOpacity style={styles.button}>
+            <Text>FirstName LastName</Text>
+            <MaterialCommunityIcons name='golf-cart' size={20}/>
+            <MaterialCommunityIcons name='walk' size={20}/>
+            <MaterialCommunityIcons name='numeric-9-circle-outline' size={20}/>
+        </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     button: {
+        flexDirection: 'row',
         backgroundColor: 'grey',
         width: 300,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 5
+        marginVertical: 15,
+        marginHorizontal: 5
     }
 });
 
