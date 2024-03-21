@@ -1,20 +1,20 @@
 import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import Player from './Player';
+import { format } from 'date-fns';
 
-const Teetime = ({navigation}) => {
+const Teetime = ({ time }) => {
     return (
        <View style={styles.container}>
-
             <View style={styles.timeContainer}>
-                <Text style={styles.time}>10:20 AM</Text>
+                <Text style={styles.time}>{format(time, 'h:mm a')}</Text>
             </View>
             <Player/>
             <Player/>
             <Player/>
             <Player/>
        </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     },
     timeContainer: {
         alignItems: 'center',
-        //justifyContent: 'center',
         width: 115,
         height: 50
     },
