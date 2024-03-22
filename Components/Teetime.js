@@ -1,13 +1,17 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import Player from './Player';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 const Teetime = ({ time }) => {
+    const date = parseISO(time.date);
+    const offsetDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+    const formattedTime = format(offsetDate, 'h:mm a');
+
     return (
-       <View style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.timeContainer}>
-                <Text style={styles.time}>{format(time, 'h:mm a')}</Text>
+                <Text style={styles.time}>{formattedTime}</Text>
             </View>
             <Player/>
             <Player/>
@@ -16,6 +20,8 @@ const Teetime = ({ time }) => {
        </View>
     );
 }
+
+
 
 const styles = StyleSheet.create({
     container: {

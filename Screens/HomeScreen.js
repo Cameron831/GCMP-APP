@@ -1,36 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import axios from 'axios';
 import Teetime from '../Components/Teetime';
 import SheetHeader from '../Components/SheetHeader';
+
+const START_HOUR = 7; // 7 AM UTC
+const END_HOUR = 17; // 5 PM UTC
 
 const HomeScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [teetimes, setTeetimes] = useState([]);
 
   useEffect(() => {
-    generateTeetimesForDay(selectedDate);
-  }, [selectedDate]);
+    retrieveTeetimesForDay();
+  }, []);
 
-  const generateTeetimesForDay = (date) => {
-    const startHour = 7; //start time
-    const endHour = 17; //end time
-    const newTeetimes = [];
-  
-    let currentDate = new Date(date.setHours(startHour, 0, 0, 0));
-  
-    while (currentDate.getHours() < endHour || (currentDate.getHours() === endHour && currentDate.getMinutes() === 0)) {
-      newTeetimes.push(new Date(currentDate));
-      currentDate.setMinutes(currentDate.getMinutes() + 10); // increment time
+  const retrieveTeetimesForDay = async () => {
+    const dateString = selectedDate.toISOString().split('T')[0];
+    try {
+        const response = await axios.get(`http://192.168.1.13:3000/teetimes?date=${dateString}`);
+        const filteredAndSortedTeetimes = response.data
+        .filter(teetime => {
+          // Convert each teetime date to a JavaScript Date object
+          const teetimeDate = new Date(teetime.date);
+          const hour = teetimeDate.getUTCHours();
+          const minutes = teetimeDate.getUTCMinutes();
+          // Keep teetimes between 7 AM (inclusive) and 5 PM (inclusive), excluding any teetimes beyond 5:00 PM
+          return (hour > START_HOUR || (hour === START_HOUR && minutes >= 0)) && 
+                (hour < END_HOUR || (hour === END_HOUR && minutes === 0));
+        })
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+        setTeetimes(filteredAndSortedTeetimes);
+    } catch (error) {
+        console.error('There was an error fetching the teetimes:', error); 
     }
-  
-    setTeetimes(newTeetimes);
-  };
+};
+
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <SheetHeader selectedDate={selectedDate} onDateChange={setSelectedDate} />
-      </View>
+      </View> 
 
       <ScrollView style={styles.teetimeContainer}>
         {teetimes.map((time, index) => (
